@@ -28,7 +28,7 @@ const SELF_STREAM_ID = "self_stream_id";
 
 
 
-export default class App extends Component {
+export default class CallScreen extends Component {
 
   constructor(props) {
     super(props);
@@ -87,7 +87,7 @@ export default class App extends Component {
         null
       }
       {this.renderJoinContainer()}
-      {this.renderLogo()}
+     
     </View>
   }
 
@@ -96,17 +96,12 @@ export default class App extends Component {
   }
 
   renderJoinContainer() {
+    if (this.props.Callaccepted){
+        this.handleJoinClick();
+    }
     if(this.state.joinState != "joined") {
       return <View style={styles.joinContainer}>
-        <Text style={styles.joinLabel}>Be the first to join this conversation</Text>
-        <TextInput style={styles.joinName}
-          placeholder={"Enter your name"} placeholderTextColor={"#888"}
-          onChangeText={(name) => this.setState({name})}
-          value={this.state.name} />
-        <TouchableHighlight style={styles.joinButton}
-            onPress={this.handleJoinClick.bind(this)}>
-          <Text style={styles.joinButtonText}>{this.state.joinState == "ready" ? "Join" : "Joining..."}</Text>
-        </TouchableHighlight>
+      
       </View>
     }
     return null;
@@ -119,6 +114,18 @@ export default class App extends Component {
   }
 
   handleJoinClick() {
+    let roomName='';
+    let ownName='';
+    if (!this.props.thisIsMyCallReq){
+      roomName=this.props.incomingPhoneNumber+'_to_'+this.props.myPhoneNumber;
+      ownName='IReceive'
+    }
+    else{
+      roomName=this.props.myPhoneNumber+'_to_'+this.props.reqPhoneNumber;
+  
+      ownName='ICall'
+    }
+   
     if(this.state.name.length == 0 || this.state.joinState != "ready") {
       return;
     }
@@ -132,7 +139,7 @@ export default class App extends Component {
       friendLeft: this.handleFriendLeft.bind(this),
       dataChannelMessage: this.handleDataChannelMessage.bind(this)
     }
-    webRTCServices.loadLocalStream2(VIDEO_CONFERENCE_ROOM, this.state.name, callbacks,this.loadCamera);
+    webRTCServices.loadLocalStream2(roomName, ownName, callbacks,this.loadCamera);
   }
 
   //----------------------------------------------------------------------------

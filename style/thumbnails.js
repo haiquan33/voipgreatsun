@@ -7,8 +7,8 @@ export default StyleSheet.create({
     //borderWidth: 1, borderColor: "red",
     height: config.thumbnailHeight,
     width: config.screenWidth,
-    bottom: 0,
-    left: 0
+    bottom: 100,
+    left: 100
   },
   thumbnailContainer: {
     //borderWidth: 1, borderColor: "green"
