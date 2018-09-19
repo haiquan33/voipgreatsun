@@ -114,14 +114,13 @@ export default class CallScreen extends Component {
   }
 
   handleJoinClick() {
-    let roomName='';
-    let ownName='';
+   
     if (!this.props.thisIsMyCallReq){
-      roomName=this.props.incomingPhoneNumber+'_to_'+this.props.myPhoneNumber;
+    
       ownName='IReceive'
     }
     else{
-      roomName=this.props.myPhoneNumber+'_to_'+this.props.reqPhoneNumber;
+     
   
       ownName='ICall'
     }
@@ -139,7 +138,7 @@ export default class CallScreen extends Component {
       friendLeft: this.handleFriendLeft.bind(this),
       dataChannelMessage: this.handleDataChannelMessage.bind(this)
     }
-    webRTCServices.loadLocalStream2(roomName, ownName, callbacks,this.loadCamera);
+    webRTCServices.loadLocalStream2(this.props.roomName, ownName, callbacks,this.loadCamera);
   }
 
   //----------------------------------------------------------------------------

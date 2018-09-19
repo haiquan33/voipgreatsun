@@ -5,7 +5,7 @@ const window = Dimensions.get('window');
 export default {
   screenWidth: window.width,
   screenHeight: window.height,
-  thumbnailHeight: 100,
+  thumbnailHeight: 200,
   useRCTView: true, //debug or not?
   video: {
     minWidth: 500,

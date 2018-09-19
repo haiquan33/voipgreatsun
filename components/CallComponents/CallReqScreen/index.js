@@ -12,14 +12,16 @@ export default class CallReqScreen extends Component {
     this.onDeclinePress=this.onDeclinePress.bind(this);
     this.state={
       accepted:false,
-      decline:false
+      decline:false,
+      roomName:''
     }
     this.WaitingforReply=this.WaitingforReply.bind(this);
   }
   WaitingforReply(){
-    webRTCServices.CallAccepted(()=>{
-      this.setState({accepted:true})
-      alert('Call Accepted')
+    webRTCServices.CallAccepted((data)=>{
+      this.setState({accepted:true,
+                      roomName:data.roomName})
+    
   })
   }
   onDeclinePress(){
@@ -35,7 +37,7 @@ export default class CallReqScreen extends Component {
         onRequestClose={this.onDeclinePress}
         style={s.container}
       >
-          <CallScreen thisIsMyCallReq={true} myPhoneNumber={this.props.navigation.getParam('phoneNumber', 'NA')} reqPhoneNumber={this.props.navigation.getParam('reqPhoneNumber', 'NA')} Callaccepted={this.state.accepted} Calldecline={this.state.decline} />
+          <CallScreen thisIsMyCallReq={true} roomName={this.state.roomName} myPhoneNumber={this.props.navigation.getParam('phoneNumber', 'NA')} reqPhoneNumber={this.props.navigation.getParam('reqPhoneNumber', 'NA')} Callaccepted={this.state.accepted} Calldecline={this.state.decline} />
           <View style={s.contentBackground}>
             <View style={s.titleContainer}>
               <Text style={s.titleText}> {this.props.navigation.getParam('incomingPhoneNumer', 'NA')} is calling</Text>

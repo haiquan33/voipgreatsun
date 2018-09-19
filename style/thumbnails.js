@@ -7,15 +7,16 @@ export default StyleSheet.create({
     //borderWidth: 1, borderColor: "red",
     height: config.thumbnailHeight,
     width: config.screenWidth,
-    bottom: 100,
-    left: 100
+    top: 0,
+    right: 0
   },
   thumbnailContainer: {
     //borderWidth: 1, borderColor: "green"
-    paddingLeft: 10
+    paddingRight: 5,
+    paddingTop: 5
   },
   thumbnail: {
-    width: 100,
+    width: 200,
     height: config.thumbnailHeight
   },
   activeThumbnail: {
