@@ -6,7 +6,11 @@ const webRTCServices = require("../../../lib/services.js");
 import Keypad from '../Keypad/index'
 import KeypadInputText from '../KeypadInputText/index'
 import styles, { inputStyle, textStyle, keyUnderlayColor } from "./style.js";
-export default class DialScreen extends Component {
+
+//redux
+import { connect } from 'react-redux';
+
+ class DialScreen extends Component {
     constructor(props) {
         super(props)
 
@@ -49,7 +53,7 @@ export default class DialScreen extends Component {
         })
     }
     componentDidMount(){
-      
+        alert(this.props.user_phone_no)
         webRTCServices.registerPhone(this.props.navigation.getParam('phoneNumber', 'NA'));
     }
 
@@ -73,3 +77,10 @@ export default class DialScreen extends Component {
         </View>)
     }
 }
+
+
+const mapStateToProps = state=> ({
+        user_phone_no:state.user_phone_no
+  });
+  
+export default connect(mapStateToProps)(DialScreen)
