@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {StyleSheet, Text, TouchableHighlight, View, ListView, Image, TextInput} from 'react-native';
-import {RTCView} from 'react-native-webrtc';
+import { StyleSheet, Text, TouchableHighlight, View, ListView, Image, TextInput } from 'react-native';
+import { RTCView } from 'react-native-webrtc';
 import Thumbnails from "./components/Thumbnails.js";
 import FullScreenVideo from "./components/FullScreenVideo.js";
 import Commons from "./lib/commons.js";
@@ -14,8 +14,8 @@ const sampleStreamURLs = [
 ]
 
 const sampleFullScreenURL = require("./image/sample-image-2.jpg");
-const backgroundImage= require("./image/IMG_0187.jpg");
-const logo= require("./image/Garena_Logo.png");
+const backgroundImage = require("./image/IMG_0187.jpg");
+const logo = require("./image/Garena_Logo.png");
 
 const FRONT_CAMERA = true;
 const webRTCServices = require("./lib/services.js");
@@ -39,7 +39,8 @@ export default class CallScreen extends Component {
       joinState: "ready", //joining, joined
       name: "aaa"
     }
-    this.loadCamera=this.loadCamera.bind(this);
+    this.loadCamera = this.loadCamera.bind(this);
+    this.renderJoinContainer = this.renderJoinContainer.bind(this);
   }
 
   componentDidMount() {
@@ -54,54 +55,65 @@ export default class CallScreen extends Component {
     });
   }
 
-  loadCamera(stream)
-  {
-    
-      this.setState({
-        activeStreamId: SELF_STREAM_ID,
-        streams: [{
-          id: SELF_STREAM_ID,
-          url: stream.toURL()
-        }]
-      })
-    
+  loadCamera(stream) {
+
+
+    this.setState({
+      activeStreamId: SELF_STREAM_ID,
+      currentStream: stream,
+      streams: [{
+        id: SELF_STREAM_ID,
+        url: stream.toURL()
+      }]
+    })
+
   }
 
   render() {
     let activeStreamResult = this.state.streams.filter(stream => stream.id == this.state.activeStreamId);
     return <View style={styles.container}>
-      <Image source={backgroundImage} blurRadius={3} style={styles.backgroundImage}/>
+      <Image source={backgroundImage} blurRadius={3} style={styles.backgroundImage} />
       <View style={styles.backgroundOverlay} />
       {
         this.state.joinState == "joined" ?
-        <FullScreenVideo streamURL={activeStreamResult.length > 0 ? activeStreamResult[0].url : null} />
-        :
-        null
+          <FullScreenVideo streamURL={activeStreamResult.length > 0 ? activeStreamResult[0].url : null} />
+          :
+          null
       }
       {
-        this.state.joinState == "joined"?
-        <Thumbnails streams={this.state.streams}
-          setActive={this.handleSetActive.bind(this)}
-          activeStreamId={this.state.activeStreamId}/>
-        :
-        null
+        this.state.joinState == "joined" ?
+          <Thumbnails streams={this.state.streams}
+            setActive={this.handleSetActive.bind(this)}
+            activeStreamId={this.state.activeStreamId} />
+          :
+          null
       }
       {this.renderJoinContainer()}
-     
+
     </View>
   }
 
   renderLogo() {
-    return <Image source={logo} style={styles.logo} resizeMode={"contain"}/>;
+    return <Image source={logo} style={styles.logo} resizeMode={"contain"} />;
   }
 
   renderJoinContainer() {
-    if (this.props.Callaccepted){
-        this.handleJoinClick();
+    if (this.props.Callaccepted) {
+      this.handleJoinClick();
     }
-    if(this.state.joinState != "joined") {
+    if (this.props.Callhangup && this.state.joinState != 'ready') {
+     
+      this.state.currentStream.getAudioTracks()[0].stop();
+     
+      this.state.currentStream.getVideoTracks()[0].stop();
+      this.setState({
+        activeStreamId: null,
+        joinState: 'ready'
+      })
+    }
+    if (this.state.joinState != "joined") {
       return <View style={styles.joinContainer}>
-      
+
       </View>
     }
     return null;
@@ -114,18 +126,18 @@ export default class CallScreen extends Component {
   }
 
   handleJoinClick() {
-   
-    if (!this.props.thisIsMyCallReq){
-    
-      ownName='IReceive'
+
+    if (!this.props.thisIsMyCallReq) {
+
+      ownName = 'IReceive'
     }
-    else{
-     
-  
-      ownName='ICall'
+    else {
+
+
+      ownName = 'ICall'
     }
-   
-    if(this.state.name.length == 0 || this.state.joinState != "ready") {
+
+    if (this.state.name.length == 0 || this.state.joinState != "ready") {
       return;
     }
     //ELSE:
@@ -138,7 +150,7 @@ export default class CallScreen extends Component {
       friendLeft: this.handleFriendLeft.bind(this),
       dataChannelMessage: this.handleDataChannelMessage.bind(this)
     }
-    webRTCServices.loadLocalStream2(this.props.roomName, ownName, callbacks,this.loadCamera);
+    webRTCServices.loadLocalStream2(this.props.roomName, ownName, callbacks, this.loadCamera);
   }
 
   //----------------------------------------------------------------------------
@@ -154,7 +166,7 @@ export default class CallScreen extends Component {
     let newState = {
       streams: this.state.streams.filter(stream => stream.id != socketId)
     }
-    if(this.state.activeStreamId == socketId) {
+    if (this.state.activeStreamId == socketId) {
       newState.activeStreamId = newState.streams[0].id;
     }
     this.setState(newState);

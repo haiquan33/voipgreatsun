@@ -53,7 +53,7 @@ import { connect } from 'react-redux';
         })
     }
     componentDidMount(){
-        alert(this.props.user_phone_no)
+       
         webRTCServices.registerPhone(this.props.navigation.getParam('phoneNumber', 'NA'));
     }
 
