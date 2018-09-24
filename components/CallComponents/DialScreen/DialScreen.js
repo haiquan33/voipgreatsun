@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableHighlight, TouchableOpacity, View, ListView, Image, TextInput, Dimensions } from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, TouchableOpacity, View, ListView, Image, TextInput, Dimensions,Button } from 'react-native';
 
 
 const webRTCServices = require("../../../lib/services.js");
@@ -10,7 +10,8 @@ import styles, { inputStyle, textStyle, keyUnderlayColor } from "./style.js";
 //redux
 import { connect } from 'react-redux';
 
- class DialScreen extends Component {
+class DialScreen extends Component {
+  
     constructor(props) {
         super(props)
 
@@ -31,7 +32,7 @@ import { connect } from 'react-redux';
     }
     startCall() {
         webRTCServices.requestCall(this.state.value);
-        this.props.navigation.navigate('ReqCall',{reqPhoneNumber:this.state.value})
+        this.props.navigation.navigate('ReqCall', { reqPhoneNumber: this.state.value })
     }
     onBackspacePress() {
         this.setState({
@@ -52,8 +53,8 @@ import { connect } from 'react-redux';
             value: this.state.value + key
         })
     }
-    componentDidMount(){
-       
+    componentDidMount() {
+
         webRTCServices.registerPhone(this.props.navigation.getParam('phoneNumber', 'NA'));
     }
 
@@ -79,8 +80,8 @@ import { connect } from 'react-redux';
 }
 
 
-const mapStateToProps = state=> ({
-        user_phone_no:state.user_phone_no
-  });
-  
+const mapStateToProps = state => ({
+    user_phone_no: state.user_phone_no
+});
+
 export default connect(mapStateToProps)(DialScreen)

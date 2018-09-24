@@ -73,5 +73,14 @@ export default StyleSheet.create({
     color: "white",
     fontSize: 16,
     fontWeight: "bold"
+  },
+  headerButton:{
+    width:30,
+    height:30,
+   
+    justifyContent: 'center',
+
+    alignItems: 'center',
+    paddingRight:10
   }
 });

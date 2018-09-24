@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableHighlight, View, ListView, Image, TextInput, Dimensions } from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, View, ListView, Image, TextInput, Dimensions, TouchableOpacity ,AsyncStorage} from 'react-native';
 import styles from "./style/mainapp.js";
 import { Home } from './components/CallComponents/Home/Home'
 import LoginScreen from './components/LoginComponents/LoginScreen'
@@ -19,21 +19,14 @@ import basicReducer from './lib/redux/basicReducer'
 import basicAction from './lib/redux/basicAction'
 
 const store = createStore(basicReducer)
+const iconLogOut = require('./assets/images/common/signout.png')
 
-
-const MainStack = createStackNavigator(
-    {
-        Login: LoginScreen,
-        Main: Home,
-        IncCall: IncomingCallScreen,
-        ReqCall: CallReqScreen
-    },
-    {
-        initialRouteName: 'Login',
-    }
-);
 
 export default class MainApp extends Component {
+
+
+
+
     constructor(props) {
         super(props)
 
@@ -45,10 +38,49 @@ export default class MainApp extends Component {
     }
     componentDidMount() {
         webRTCServices.waitforCall(this.showCallingPromt);
-        
+
 
     }
+
+
+    LogOut(){
+        webRTCServices.unregisterPhone();
+         AsyncStorage.removeItem('userPhoneNumber',()=>{
+            NavigationService.navigate('Login')
+         })
+          
+
+    }
+
     render() {
+        const MainStack = createStackNavigator(
+            {
+                Login: {
+                    screen:LoginScreen,
+                   
+                },
+                Main: {
+                    screen: Home,
+                    navigationOptions: {
+
+                        headerRight: (
+                            <TouchableOpacity
+                                onPress={this.LogOut}
+                                style={styles.headerButton}
+                            >
+                                <Image style={styles.headerButton} source={iconLogOut}></Image>
+                            </TouchableOpacity>
+                        ),
+                    }
+                },
+                IncCall: IncomingCallScreen,
+                ReqCall: CallReqScreen
+            },
+            {
+                initialRouteName: 'Login',
+                headerMode: 'screen'
+            }
+        );
         return (
             <Provider store={store}>
                 <View style={styles.container}>

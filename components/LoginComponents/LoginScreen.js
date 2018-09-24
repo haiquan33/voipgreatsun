@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableHighlight, View, ListView, Image, TextInput, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, View, ListView, Image, TextInput, AsyncStorage, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import { get_User_phone_no } from '../../lib/redux/basicAction'
 import { bindActionCreators } from 'redux'
 
 class LoginScreen extends Component {
+    static navigationOptions = {
+        header:null // !!! Hide Header
+      }
     constructor(props) {
         super(props);
         this.state = {
@@ -31,6 +34,12 @@ class LoginScreen extends Component {
     }
 
     componentWillMount() {
+
+        BackHandler.addEventListener('hardwareBackPress', function () {
+            BackHandler.exitApp()
+            return true
+        }.bind(this))
+
         AsyncStorage.getItem('userPhoneNumber', (err, result) => {
             if (result != null) {
                 this.props.get_User_phone_no(result)
