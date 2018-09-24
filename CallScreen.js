@@ -44,6 +44,7 @@ export default class CallScreen extends Component {
   }
 
   componentDidMount() {
+    alert(this.props.reqPhoneNumber)
     webRTCServices.getLocalStream(true, (stream) => {
       this.setState({
         activeStreamId: SELF_STREAM_ID,

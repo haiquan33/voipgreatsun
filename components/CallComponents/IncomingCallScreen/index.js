@@ -18,20 +18,23 @@ export default class IncomingCallScreen extends Component {
       roomName: '',
     }
 
-   
-    this.WaitingforHangUp=this.WaitingforHangUp.bind(this);
+
+    this.WaitingforHangUp = this.WaitingforHangUp.bind(this);
+    this.WaitingforDecline=this.WaitingforDecline.bind(this);
   }
   onAnswerPress() {
     webRTCServices.acceptCall();
     webRTCServices.CallAccepted((data) => {
-      this.setState({
-        accepted: true,
-        roomName: data.roomName
-      })
-
+      if (!this.state.decline) {
+        this.setState({
+          accepted: true,
+          roomName: data.roomName
+        })
+      }
     })
   }
   onDeclinePress() {
+    webRTCServices.CallDecline();
     this.setState({ decline: true })
   }
 
@@ -48,7 +51,19 @@ export default class IncomingCallScreen extends Component {
     })
   }
 
-  
+
+  WaitingforDecline(){
+    webRTCServices.ListenCallDecline(()=>{
+      this.setState({
+        accepted: false,
+        decline: true,
+        hangup: false,
+        roomName: ''
+      })
+      NavigationService.navigate('Main');
+    })
+  }
+
   onHangUpPress() {
     this.setState({ hangup: true, accepted: false });
     // NavigationService.navigate('Main')
@@ -56,8 +71,9 @@ export default class IncomingCallScreen extends Component {
     NavigationService.navigate('Main');
   }
 
-  componentDidMount(){
-    this.WaitingforHangUp();  
+  componentDidMount() {
+    this.WaitingforHangUp();
+    this.WaitingforDecline();
 
   }
 
@@ -69,8 +85,8 @@ export default class IncomingCallScreen extends Component {
         visible
         onRequestClose={this.onDeclinePress}
         style={s.container}
-      > 
-        <CallScreen thisIsMyCallReq={false} roomName={this.state.roomName} myPhoneNumber={this.props.navigation.getParam('phoneNumber', 'NA')} incomingPhoneNumber={this.props.navigation.getParam('incomingPhoneNumer', 'NA')} Callaccepted={this.state.accepted} Calldecline={this.state.decline} Callhangup={this.state.hangup}/>
+      >
+        <CallScreen thisIsMyCallReq={false} roomName={this.state.roomName} myPhoneNumber={this.props.navigation.getParam('phoneNumber', 'NA')} incomingPhoneNumber={this.props.navigation.getParam('incomingPhoneNumer', 'NA')} Callaccepted={this.state.accepted} Calldecline={this.state.decline} Callhangup={this.state.hangup} />
         <View style={s.contentBackground}>
           <View style={s.titleContainer}>
             <Text style={s.titleText}> {this.props.navigation.getParam('incomingPhoneNumer', 'NA')} is calling</Text>

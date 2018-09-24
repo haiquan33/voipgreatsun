@@ -1,17 +1,79 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableHighlight, View, ListView, Image, TextInput, Dimensions } from 'react-native';
 
+import styles from "./style.js";
 
-export default class ContactScreen extends Component {
+import Contacts from 'react-native-contacts'
+import Contactlist from './Contactlist'
+
+//redux
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux'
+import { store_User_contact_list } from '../../../lib/redux/basicAction'
+import { PermissionsAndroid } from 'react-native';
+
+class ContactScreen extends Component {
     constructor(props) {
         super(props)
 
-       
+
     }
-  
-    render() {
-        return (<View style={styles.container}>
-            <Text>Contact</Text>
-        </View>)
+
+
+//     async function requestCameraPermission() {
+//     try {
+//         const granted = await PermissionsAndroid.request(
+//             PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+//             {
+//                 'title': 'Cool Photo App Camera Permission',
+//                 'message': 'Cool Photo App needs access to your camera ' +
+//                     'so you can take awesome pictures.'
+//             }
+//         )
+//         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+//             console.log("You can use contact")
+//         } else {
+//             console.log("contact permission denied")
+//         }
+//     } catch (err) {
+//         console.warn(err)
+//     }
+// }
+
+componentDidMount() {
+
+ //   requestCameraPermission();
+
+
+    console.log("current contact list", this.props.user_contact_list);
+    if (this.props.user_contact_list == null) {
+        console.log("get contact list");
+        Contacts.getAll((err, contacts) => {
+            if (err) console.log("err contact list", err);
+            else (console.log("contact", contacts.length))
+
+            // contacts returned
+            this.props.store_User_contact_list(contacts);
+        })
     }
 }
+
+render() {
+    return (<View style={styles.container}>
+        <Contactlist contactlist={this.props.user_contact_list} />
+    </View>)
+}
+}
+
+
+const mapDispatchToProps = dispatch => (
+    bindActionCreators({
+        store_User_contact_list,
+    }, dispatch)
+);
+
+const mapStateToProps = state => ({
+    user_contact_list: state.user_contact_list
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactScreen);

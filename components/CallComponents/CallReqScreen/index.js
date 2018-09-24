@@ -19,23 +19,38 @@ export default class CallReqScreen extends Component {
       roomName: ''
     }
 
-    this.WaitingforHangUp=this.WaitingforHangUp.bind(this);
+    this.WaitingforHangUp = this.WaitingforHangUp.bind(this);
     this.WaitingforReply = this.WaitingforReply.bind(this);
+    this.WaitingforDecline=this.WaitingforDecline.bind(this);
   }
   WaitingforReply() {
     webRTCServices.CallAccepted((data) => {
-      this.setState({
-        accepted: true,
-        roomName: data.roomName
-      })
+      if (!this.state.decline) {
+        this.setState({
+          accepted: true,
+          roomName: data.roomName
+        })
+      }
 
+    })
+  }
+
+  WaitingforDecline(){
+    webRTCServices.ListenCallDecline(()=>{
+      this.setState({
+        accepted: false,
+        decline: true,
+        hangup: false,
+        roomName: ''
+      })
+      NavigationService.navigate('Main');
     })
   }
 
   WaitingforHangUp() {
     webRTCServices.CallHangUp(() => {
       webRTCServices.HangUp();
-    
+
 
       this.setState({
         accepted: false,
@@ -49,7 +64,9 @@ export default class CallReqScreen extends Component {
   }
 
   onDeclinePress() {
-    this.setState({ decline: true })
+    
+    this.setState({ decline: true });
+    webRTCServices.CallDecline();
   }
   onHangUpPress() {
     this.setState({ hangup: true, accepted: false });
@@ -59,7 +76,9 @@ export default class CallReqScreen extends Component {
   }
   componentDidMount() {
     this.WaitingforReply();
-    this.WaitingforHangUp()
+    this.WaitingforHangUp();
+    this.WaitingforDecline();
+  
   }
 
   render() {
