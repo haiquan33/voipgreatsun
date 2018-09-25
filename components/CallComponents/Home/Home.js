@@ -26,7 +26,7 @@ export const Home =createTabNavigator({
                     height: 50
                 },
                 style: {
-                    backgroundColor: '#05146E'
+                    backgroundColor: '#D8DCDC'
                 },
                 
             }

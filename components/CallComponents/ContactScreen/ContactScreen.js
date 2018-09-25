@@ -16,22 +16,22 @@ class ContactScreen extends Component {
 
     static navigationOptions = {
         tabBarLabel: 'Danh bạ',
-       
+
         tabBarIcon: ({ tintColor }) => (
-            <View style={{  flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row' }}>
                 <Image
                     source={require('../../../assets/images/call/action-attendant-transfer-icon.png')}
                     style={{ width: 20, height: 20, tintColor: tintColor }}
                 />
-                 <Text style={{color:'#fff',marginLeft:10}}>Danh bạ</Text>
+                <Text style={{ color: '#fff', marginLeft: 10 }}>Danh bạ</Text>
             </View>
         ),
 
     };
     constructor(props) {
         super(props)
-
-
+        this._handleSearchResults = this.handleSearchResults.bind(this)
+        this.state={user_contact_list:[]}
     }
 
 
@@ -55,7 +55,13 @@ class ContactScreen extends Component {
     //     }
     // }
 
-    componentWillMount() {
+
+    handleSearchResults(results) {
+            console.log("result",results)
+            this.setState({user_contact_list:results})
+    }
+
+    componentDidMount() {
 
         //   requestCameraPermission();
 
@@ -67,35 +73,39 @@ class ContactScreen extends Component {
             //try to get saved contact list on local
             AsyncStorage.getItem('userContactList', (err, result) => {
                 if (result == null) {
-                 
+
                     //if the user has never saved the contact list, get the contact list and save it
                     Contacts.getAll((err, contacts) => {
                         if (err) console.log("err contact list", err);
                         else (console.log("contact", contacts.length))
-        
+
+                        this.setState({user_contact_list:contacts})
                         // contacts returned
                         this.props.store_User_contact_list(contacts);
                         //save the contact list on local
                         AsyncStorage.setItem('userContactList', JSON.stringify(contacts), () => {
-                            
+                               
                         })
                     })
                 }
-                else{
-                    
+                else {
+                    this.setState({user_contact_list:JSON.parse(result)})
                     this.props.store_User_contact_list(JSON.parse(result));
 
                 }
             });
 
 
-           
+
         }
     }
 
     render() {
         return (<View style={styles.container}>
-            <Contactlist contactlist={this.props.user_contact_list} />
+            <View>
+                
+            </View>
+            <Contactlist contactlist={this.state.user_contact_list} />
         </View>)
     }
 }

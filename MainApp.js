@@ -66,7 +66,7 @@ export default class MainApp extends Component {
                     navigationOptions: {
                         headerLeft:null,
                         headerStyle: {
-                            backgroundColor: '#051886',
+                            backgroundColor: '#D8DCDC',
                         },
                         headerTintColor: '#fff',
                         headerRight: (

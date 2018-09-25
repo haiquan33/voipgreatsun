@@ -33,7 +33,13 @@ export default StyleSheet.create({
   CallActioncontainer: {
     flex: 0.2,
     justifyContent: 'center',
-    flexDirection:'row'
+    flexDirection:'row',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
+   
   },
   actionsWrapper: {
     flex: 0.281,
@@ -46,12 +52,17 @@ export default StyleSheet.create({
     alignItems: "center"
   },
   actionTouchable: {
-    width:'50%',
-    height:'50%',
-    backgroundColor: "#05146E",
+    width:80,
+    height:80,
+    backgroundColor: "#D8DCDC",
     justifyContent: 'center',
-    borderRadius: 128,
-    alignItems: 'center'
+    borderRadius: 100,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
   },
   actionDarkTouchable: {
     backgroundColor: "#59696f"

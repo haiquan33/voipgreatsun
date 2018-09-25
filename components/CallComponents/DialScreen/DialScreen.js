@@ -153,7 +153,7 @@ class DialScreen extends Component {
     }
 
     render() {
-        iconCall = require('../../../assets/images/keypad/call-icon.png')
+        iconCall = require('../../../assets/images/keypad/call-icon2.png')
 
 
         return (<View style={styles.container}>
@@ -175,11 +175,11 @@ class DialScreen extends Component {
                 onClearPress={this._onClearPress}
                 showAddContact={this._showAddContact}
             />
-            <Keypad style={{ flex: 0.75, marginTop: 40 }} onKeyPress={this._onKeyPress}
+            <Keypad style={{ flex: 0.75, marginTop: 20 }} onKeyPress={this._onKeyPress}
                 onDefineKeySize={this._onDefineKeySize} />
             <View style={styles.CallActioncontainer}>
                 <TouchableOpacity onPress={this._startCall} style={styles.actionTouchable}  >
-                    <Image source={iconCall} />
+                    <Image  style={{width:50,height:50,resizeMode:'contain'}} source={iconCall} />
                 </TouchableOpacity>
             </View>
         </View>)

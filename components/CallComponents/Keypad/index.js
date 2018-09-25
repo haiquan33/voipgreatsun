@@ -24,7 +24,7 @@ export default class Keypad extends Component {
 
   onLayoutKey(event) {
     const {width, height} = event.nativeEvent.layout
-    this.setState({keySize: height})
+    this.setState({keySize: height*0.75})
 
     this.props.onDefineKeySize && this.props.onDefineKeySize({width, height})
   }
@@ -44,19 +44,19 @@ export default class Keypad extends Component {
           /* Show key only when we know it's width to render square touchable */
           !this.state.keySize ? null :
             <Touchable
-              style={[s.keyTouchable, {width: this.state.keySize}, this.props.keyStyle]}
+              style={[s.keyTouchable, {width: 80}, this.props.keyStyle]}
               onPress={this.onKeyPress.bind(this, digit)}
             >
               <View style={s.keyDigitWrapper}>
                 <Text style={[s.keyDigitText, this.props.keyTextStyle]}>{digit}</Text>
-                <Text style={[s.keyLettersText, this.props.keyTextStyle]}>{letters}</Text>
+                
               </View>
             </Touchable>
         }
       </View>
     )
   }
-
+//<Text style={[s.keyLettersText, this.props.keyTextStyle]}>{letters}</Text>
   render() {
     const keys = [
       ['1', '2', '3'],

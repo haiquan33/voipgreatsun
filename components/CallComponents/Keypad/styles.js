@@ -3,26 +3,37 @@ import {correctFontSizeForScreen} from '../../../utils/scale'
 
 export default styles = StyleSheet.create({
   row: {
-    flex: 0.127,
+    flex: 0.5,
     flexDirection: "row"
   },
   outerLineOffset: {
-    flex: 0.106
+    flex: 0.206
   },
   innerLineOffset: {
-    flex: 0.09
+    flex: 0.309
   },
   keyWrapper: {
-    flex: 0.202,
+    flex: 0.802,
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
+  
+   
    
   },
   keyTouchable: {
-    borderRadius: 100,
+    borderRadius: 50,
     justifyContent: 'center',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
+    marginTop:20,
+    marginBottom:20,
+    width:10,
+    
   },
   keyDigitText: {
     fontSize: correctFontSizeForScreen(28),
@@ -37,7 +48,13 @@ export default styles = StyleSheet.create({
     textAlign: "center"
   },
   keyDigitWrapper: {
-    backgroundColor: 'transparent'
+    backgroundColor: '#D8DCDC',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
+    
   }
 })
 
