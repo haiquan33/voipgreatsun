@@ -86,7 +86,7 @@ class DialScreen extends Component {
                 onBackspacePress={this._onBackspacePress}
                 onClearPress={this._onClearPress}
             />
-            <Keypad style={{ flex: 0.75 }} onKeyPress={this._onKeyPress}
+            <Keypad style={{ flex: 0.75,marginTop:50 }} onKeyPress={this._onKeyPress}
                 onDefineKeySize={this._onDefineKeySize} />
             <View style={styles.CallActioncontainer}>
                 <TouchableOpacity onPress={this._startCall} style={styles.actionTouchable}  >

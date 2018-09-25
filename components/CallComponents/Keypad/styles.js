@@ -13,10 +13,11 @@ export default styles = StyleSheet.create({
     flex: 0.09
   },
   keyWrapper: {
-    flex: 0.202,
+    flex: 0.502,
     flexDirection: "row",
     justifyContent: "space-around",
-    alignItems: "stretch"
+    alignItems: "center",
+   
   },
   keyTouchable: {
     borderRadius: 100,
@@ -32,7 +33,7 @@ export default styles = StyleSheet.create({
   keyLettersText: {
     fontSize: correctFontSizeForScreen(9),
     color: "#000",
-    fontWeight: '200',
+    fontWeight: '100',
     textAlign: "center"
   },
   keyDigitWrapper: {

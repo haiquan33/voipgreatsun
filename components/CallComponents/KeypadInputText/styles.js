@@ -4,9 +4,10 @@ import {correctFontSizeForScreen} from '../../../utils/scale'
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: "#F3F6F8",
+    backgroundColor: "transparent",
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    height:40
   },
   text: {
     marginLeft: 48,
@@ -24,6 +25,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 16
+  },
+  addTouchable: {
+    width: 25,
+    height: 25,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 16
   }
 })
 
