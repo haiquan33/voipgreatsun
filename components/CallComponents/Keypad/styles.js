@@ -13,7 +13,7 @@ export default styles = StyleSheet.create({
     flex: 0.09
   },
   keyWrapper: {
-    flex: 0.502,
+    flex: 0.202,
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",

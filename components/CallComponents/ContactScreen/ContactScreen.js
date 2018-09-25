@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableHighlight, View, ListView, Image, TextInput, Dimensions } from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, View, ListView, Image, TextInput, Dimensions, AsyncStorage } from 'react-native';
 
 import styles from "./style.js";
 
@@ -55,7 +55,7 @@ class ContactScreen extends Component {
     //     }
     // }
 
-    componentDidMount() {
+    componentWillMount() {
 
         //   requestCameraPermission();
 
@@ -63,13 +63,33 @@ class ContactScreen extends Component {
         console.log("current contact list", this.props.user_contact_list);
         if (this.props.user_contact_list == null) {
             console.log("get contact list");
-            Contacts.getAll((err, contacts) => {
-                if (err) console.log("err contact list", err);
-                else (console.log("contact", contacts.length))
 
-                // contacts returned
-                this.props.store_User_contact_list(contacts);
-            })
+            //try to get saved contact list on local
+            AsyncStorage.getItem('userContactList', (err, result) => {
+                if (result == null) {
+                 
+                    //if the user has never saved the contact list, get the contact list and save it
+                    Contacts.getAll((err, contacts) => {
+                        if (err) console.log("err contact list", err);
+                        else (console.log("contact", contacts.length))
+        
+                        // contacts returned
+                        this.props.store_User_contact_list(contacts);
+                        //save the contact list on local
+                        AsyncStorage.setItem('userContactList', JSON.stringify(contacts), () => {
+                            
+                        })
+                    })
+                }
+                else{
+                    
+                    this.props.store_User_contact_list(JSON.parse(result));
+
+                }
+            });
+
+
+           
         }
     }
 

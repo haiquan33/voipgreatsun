@@ -14,8 +14,6 @@ const webRTCServices = require("../../../lib/services.js");
 
 
 
-
-
 const iconCall = require('../../../assets/images/keypad/call-icon.png')
 
 export default class Contactlist extends Component {
@@ -39,22 +37,23 @@ export default class Contactlist extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.state.contact_list == null) {
-            
-            if (nextProps.contactlist) {
+      
+            // if (nextProps.contactlist) {
+               
+            //     let temp_list = nextProps.contactlist.map(contact => {
+            //         var item = contact;
+            //         item.key = contact.rawContactId;
+            //         return item;
+            //     })
 
-                let temp_list = nextProps.contactlist.map(contact => {
-                    var item = contact;
-                    item.key = contact.rawContactId;
-                    return item;
-                })
-
-              
-                this.setState({ contact_list: temp_list });
-            }
-        }
+                
+            //     this.setState({ contact_list: temp_list });
+            // }
+        
+        
     }
 
+   
 
     renderItem(item) {
         let temp_fname = item.familyName ? item.familyName : '';
@@ -121,7 +120,7 @@ export default class Contactlist extends Component {
         return (
             <View style={styles.container}>
                 <FlatList
-                    data={this.state.contact_list}
+                    data={this.props.contactlist}
                     renderItem={({ item }) => this.renderItem(item)}
                 />
             </View>

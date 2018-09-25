@@ -69,6 +69,29 @@ export default StyleSheet.create({
   actionDarkText: {
     color: "#FFF"
   },
-  
+  modalWrapper:{
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  modalInput:{
+    height: 50,
+    width:'70%', 
+    borderBottomColor:'black',
+    borderBottomWidth:2,
+    fontSize:18,
+    marginTop:15
+  },
+  modalActionWrapper:{
+    flexDirection:'row',
+    width:'100%',
+    justifyContent: 'space-around',
+    marginTop:100,
+  },
+  modalButton:{
+      width:40,
+      height:40,
+    
+      resizeMode:'stretch'
+  }
 })
 

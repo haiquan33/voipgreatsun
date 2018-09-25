@@ -89,7 +89,7 @@ export default class Keypad extends Component {
 
       if (i !== keys.length - 1) {
         keypad.push((
-          <View key={"split" + i} style={{flex: 0.008 * this.state.heightRatio}}/>
+          <View key={"split" + i} style={{flex: 0.006 * this.state.heightRatio}}/>
         ))
       }
     }

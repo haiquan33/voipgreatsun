@@ -8,11 +8,13 @@
   },
   "dependencies": {
     "@ercpereda/react-native-accordion": "^2.0.6",
+    "buffer": "^5.2.1",
     "react": "16.5.0",
     "react-native": "0.57.0",
     "react-native-contacts": "^2.2.3",
     "react-native-gesture-handler": "^1.0.7",
     "react-native-linear-gradient": "^2.4.2",
+    "react-native-uuid": "^1.4.9",
     "react-native-webrtc": "^1.67.1",
     "react-navigation": "^2.14.2",
     "react-redux": "^5.0.7",
