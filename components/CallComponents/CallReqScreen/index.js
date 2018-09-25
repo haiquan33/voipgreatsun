@@ -74,6 +74,7 @@ export default class CallReqScreen extends Component {
 
     this.setState({ decline: true });
     webRTCServices.CallDecline();
+    NavigationService.navigate('Main');
   }
   onHangUpPress() {
     this.setState({ hangup: true, accepted: false });
