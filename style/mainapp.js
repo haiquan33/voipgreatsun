@@ -75,12 +75,12 @@ export default StyleSheet.create({
     fontWeight: "bold"
   },
   headerButton:{
-    width:30,
-    height:30,
+    width:25,
+    height:25,
    
     justifyContent: 'center',
 
     alignItems: 'center',
-    paddingRight:10
+    marginRight:10
   }
 });

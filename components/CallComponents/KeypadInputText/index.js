@@ -8,14 +8,14 @@ const KeypadInputText = ({style, textStyle, value, editable, onBackspacePress, o
   return (
     <View style={[s.container, style]}>
       <Text
-        numberOfLines={1} ellipsizeMode="head"
+        numberOfLines={1} 
         style={[s.text, (editable === false ? s.textNotEditable : null), textStyle]}
       >
         {value}
       </Text>
 
       {
-        !value || value.length === 0 || editable === false ? null :
+        //!value || value.length === 0 || editable === false ? null :
           <TouchableOpacity
             onPress={onBackspacePress}
             onLongPress={onClearPress}

@@ -5,16 +5,31 @@ import ContactScreen from '../ContactScreen/ContactScreen'
 import DialScreen from '../DialScreen/DialScreen'
 import styles from "./style.js";
 export const Home =createTabNavigator({
-        DialScreen:{
+        Dial:{
             screen:DialScreen
         },
-        ContactScreen:{
+        Contact:{
             screen:ContactScreen
         }
     },
     {
             tabBarPosition :'bottom',
-            swipeEnabled:true
+            swipeEnabled:true,
+            tabBarOptions: {
+                showIcon: true,
+                showLabel: false,
+                iconStyle: {
+                    width: 100,
+                    height: 20
+                },
+                tabStyle: {
+                    height: 50
+                },
+                style: {
+                    backgroundColor: '#05146E'
+                },
+                
+            }
 
     }
 )

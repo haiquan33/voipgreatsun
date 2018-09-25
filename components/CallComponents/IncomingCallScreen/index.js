@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import { TouchableOpacity, View, Text, Modal } from 'react-native'
+import { TouchableOpacity, View, Text, Modal,Image } from 'react-native'
 import CallScreen from '../../../CallScreen';
 const webRTCServices = require("../../../lib/services");
 import s from './styles'
 import NavigationService from '../../NavigationService';
 
+const callAnswerIco=require('../../../assets/images/call/action-answer.png')
+
+const callHangUpIco=require('../../../assets/images/call/action-hangup.png')
+
 export default class IncomingCallScreen extends Component {
+  static navigationOptions = {
+    header: null // !!! Hide Header
+  }
   constructor(props) {
     super(props);
     this.onAnswerPress = this.onAnswerPress.bind(this);
@@ -20,7 +27,7 @@ export default class IncomingCallScreen extends Component {
 
 
     this.WaitingforHangUp = this.WaitingforHangUp.bind(this);
-    this.WaitingforDecline=this.WaitingforDecline.bind(this);
+    this.WaitingforDecline = this.WaitingforDecline.bind(this);
   }
   onAnswerPress() {
     webRTCServices.acceptCall();
@@ -52,8 +59,8 @@ export default class IncomingCallScreen extends Component {
   }
 
 
-  WaitingforDecline(){
-    webRTCServices.ListenCallDecline(()=>{
+  WaitingforDecline() {
+    webRTCServices.ListenCallDecline(() => {
       this.setState({
         accepted: false,
         decline: true,
@@ -86,25 +93,26 @@ export default class IncomingCallScreen extends Component {
         onRequestClose={this.onDeclinePress}
         style={s.container}
       >
+        <View style={{ backgroundColor: '#05146E',width:'100%', justifyContent:'center',alignItems:'center',height:50}}>
+          <Text style={s.titleText}> {this.props.navigation.getParam('incomingPhoneNumer', 'NA')} is calling</Text>
+        </View>
         <CallScreen thisIsMyCallReq={false} roomName={this.state.roomName} myPhoneNumber={this.props.navigation.getParam('phoneNumber', 'NA')} incomingPhoneNumber={this.props.navigation.getParam('incomingPhoneNumer', 'NA')} Callaccepted={this.state.accepted} Calldecline={this.state.decline} Callhangup={this.state.hangup} />
         <View style={s.contentBackground}>
-          <View style={s.titleContainer}>
-            <Text style={s.titleText}> {this.props.navigation.getParam('incomingPhoneNumer', 'NA')} is calling</Text>
-          </View>
+
           {this.state.accepted ? null :
             <TouchableOpacity onPress={this.onAnswerPress} style={[s.actionTouchable, s.actionGreen]}>
-              <Text style={s.actionText}>Answer</Text>
+              <Image source={callAnswerIco}/>
             </TouchableOpacity>
 
 
           }
           {this.state.accepted ?
             <TouchableOpacity onPress={this.onHangUpPress} style={[s.actionTouchable, s.actionRed]}>
-              <Text style={s.actionText}>Hang Up</Text>
+               <Image source={callHangUpIco}/>
             </TouchableOpacity>
             :
             <TouchableOpacity onPress={this.onDeclinePress} style={[s.actionTouchable, s.actionRed]}>
-              <Text style={s.actionText}>Decline</Text>
+               <Image source={callHangUpIco}/>
             </TouchableOpacity>}
 
         </View>

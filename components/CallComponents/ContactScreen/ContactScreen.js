@@ -13,6 +13,21 @@ import { store_User_contact_list } from '../../../lib/redux/basicAction'
 import { PermissionsAndroid } from 'react-native';
 
 class ContactScreen extends Component {
+
+    static navigationOptions = {
+        tabBarLabel: 'Danh bạ',
+       
+        tabBarIcon: ({ tintColor }) => (
+            <View style={{  flexDirection: 'row' }}>
+                <Image
+                    source={require('../../../assets/images/call/action-attendant-transfer-icon.png')}
+                    style={{ width: 20, height: 20, tintColor: tintColor }}
+                />
+                 <Text style={{color:'#fff',marginLeft:10}}>Danh bạ</Text>
+            </View>
+        ),
+
+    };
     constructor(props) {
         super(props)
 
@@ -20,49 +35,49 @@ class ContactScreen extends Component {
     }
 
 
-//     async function requestCameraPermission() {
-//     try {
-//         const granted = await PermissionsAndroid.request(
-//             PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
-//             {
-//                 'title': 'Cool Photo App Camera Permission',
-//                 'message': 'Cool Photo App needs access to your camera ' +
-//                     'so you can take awesome pictures.'
-//             }
-//         )
-//         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-//             console.log("You can use contact")
-//         } else {
-//             console.log("contact permission denied")
-//         }
-//     } catch (err) {
-//         console.warn(err)
-//     }
-// }
+    //     async function requestCameraPermission() {
+    //     try {
+    //         const granted = await PermissionsAndroid.request(
+    //             PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+    //             {
+    //                 'title': 'Cool Photo App Camera Permission',
+    //                 'message': 'Cool Photo App needs access to your camera ' +
+    //                     'so you can take awesome pictures.'
+    //             }
+    //         )
+    //         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+    //             console.log("You can use contact")
+    //         } else {
+    //             console.log("contact permission denied")
+    //         }
+    //     } catch (err) {
+    //         console.warn(err)
+    //     }
+    // }
 
-componentDidMount() {
+    componentDidMount() {
 
- //   requestCameraPermission();
+        //   requestCameraPermission();
 
 
-    console.log("current contact list", this.props.user_contact_list);
-    if (this.props.user_contact_list == null) {
-        console.log("get contact list");
-        Contacts.getAll((err, contacts) => {
-            if (err) console.log("err contact list", err);
-            else (console.log("contact", contacts.length))
+        console.log("current contact list", this.props.user_contact_list);
+        if (this.props.user_contact_list == null) {
+            console.log("get contact list");
+            Contacts.getAll((err, contacts) => {
+                if (err) console.log("err contact list", err);
+                else (console.log("contact", contacts.length))
 
-            // contacts returned
-            this.props.store_User_contact_list(contacts);
-        })
+                // contacts returned
+                this.props.store_User_contact_list(contacts);
+            })
+        }
     }
-}
 
-render() {
-    return (<View style={styles.container}>
-        <Contactlist contactlist={this.props.user_contact_list} />
-    </View>)
-}
+    render() {
+        return (<View style={styles.container}>
+            <Contactlist contactlist={this.props.user_contact_list} />
+        </View>)
+    }
 }
 
 

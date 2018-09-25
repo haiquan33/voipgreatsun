@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableHighlight, View, ListView, Image, TextInput, AsyncStorage, BackHandler } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+
 import { connect } from 'react-redux';
 import { get_User_phone_no } from '../../lib/redux/basicAction'
 import { bindActionCreators } from 'redux'
+
+import styles from './styles';
+
+
+const logo=require('../../assets/images/common/logoMain.png')
 
 class LoginScreen extends Component {
     static navigationOptions = {
@@ -52,17 +59,22 @@ class LoginScreen extends Component {
 
     render() {
         return (
+            <LinearGradient colors={['#051365', '#061988', '#4256D7']} style={styles.containerGradient}>
             <View>
+                <Image source={logo} style={styles.logo}></Image>
                 <TextInput
-                    placeholder={"Enter your name"} placeholderTextColor={"#888"}
+                    placeholder={"Nhập số điện thoại"} placeholderTextColor={"#fff"}
                     onChangeText={(phonenumber) => this.setState({ phonenumber })}
                     keyboardType='number-pad'
-                    value={this.state.phonenumber} />
+                    value={this.state.phonenumber} 
+                    style={styles.input}
+                    />
                 <TouchableHighlight
-                    onPress={this.handleEnterClick}>
-                    <Text >Enter</Text>
+                    onPress={this.handleEnterClick} style={styles.loginButton}>
+                    <Text style={styles.loginText} >ĐĂNG NHẬP</Text>
                 </TouchableHighlight>
             </View>
+            </LinearGradient>
         )
     }
 }

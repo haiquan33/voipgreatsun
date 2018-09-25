@@ -85,9 +85,13 @@ export default class Contactlist extends Component {
         Content = phoneNumber? (
             <View style={{
                 display: 'flex',
-                backgroundColor: '#31363D'
+                backgroundColor: '#BCBCBC',
+                height:60,
+                flexDirection:'row',
+                justifyContent:'flex-end',
+                alignItems:'center'
             }}>
-                <TouchableOpacity onPress={()=>this._startCall(phoneNumber)}   >
+                <TouchableOpacity onPress={()=>this._startCall(phoneNumber)}  style={{margin:10}} >
                     <Image source={iconCall} />
                 </TouchableOpacity>
             </View>)

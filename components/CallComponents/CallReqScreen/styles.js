@@ -7,6 +7,8 @@ export default StyleSheet.create({
     justifyContent: 'center',
     width: config.screenWidth,
     height: config.screenHeight,
+    alignItems:'center',
+    backgroundColor:'transparent'
     //borderWidth: 1, borderColor: "red"
   },
   modalBackground: {
@@ -16,25 +18,30 @@ export default StyleSheet.create({
     justifyContent: 'flex-end'
   },
   contentBackground: {
-    backgroundColor: "#FFF",
-    padding: 20
+    backgroundColor: "transparent",
+    padding: 20,
+    justifyContent:'center',
+    alignItems:'center',
   },
   titleContainer: {
     alignItems: 'center',
     justifyContent: 'center'
   },
   titleText: {
-    color: "#000",
-    fontSize: correctFontSizeForScreen(22)
+    color: "#fff",
+    fontSize: correctFontSizeForScreen(22),
+    backgroundColor:'transparent',
+    
   },
   actionTouchable: {
-    padding: 12,
-    marginTop: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: 28,
+    height:80,
+    width:80,
+    borderRadius: 100,
     borderBottomWidth: 1,
-    backgroundColor: "#4CD964"
+    backgroundColor: "#4CD964",
+    justifyContent:'center',
+    alignItems:'center',
+    margin:20,
   },
   actionGreen: {
     backgroundColor: "#4CD964"

@@ -14,6 +14,7 @@ import com.facebook.soloader.SoLoader;
 import java.util.Arrays;
 import java.util.List;
 import com.oney.WebRTCModule.WebRTCModulePackage; 
+import com.BV.LinearGradient.LinearGradientPackage;
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
@@ -29,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
             new RNGestureHandlerPackage(),
        
             new ReactNativeContacts(),
+            new LinearGradientPackage(),
         new WebRTCModulePackage()   
       );
     }

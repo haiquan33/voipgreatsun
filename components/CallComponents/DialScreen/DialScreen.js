@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableHighlight, TouchableOpacity, View, ListView, Image, TextInput, Dimensions,Button } from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, TouchableOpacity, View, ListView, Image, TextInput, Dimensions, Button } from 'react-native';
 
 
 const webRTCServices = require("../../../lib/services.js");
@@ -10,8 +10,26 @@ import styles, { inputStyle, textStyle, keyUnderlayColor } from "./style.js";
 //redux
 import { connect } from 'react-redux';
 
+
 class DialScreen extends Component {
-  
+
+
+
+    static navigationOptions = {
+        tabBarLabel: 'Gọi',
+        tabBarIcon: ({ tintColor }) => (
+            <View style={{flex: 1, flexDirection: 'row'}}>
+                <Image
+                    source={require('../../../assets/images/call/action-park.png')}
+                    style={{ width: 20, height: 20, tintColor: tintColor, }}
+                />
+                <Text style={{color:'#fff',marginLeft:10}}> Gọi</Text>
+            </View>
+        ),
+
+    };
+
+
     constructor(props) {
         super(props)
 

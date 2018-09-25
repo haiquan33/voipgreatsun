@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import { TouchableOpacity, View, Text, Modal } from 'react-native'
+import { TouchableOpacity, View, Text, Modal, Image } from 'react-native'
 import CallScreen from '../../../CallScreen';
 const webRTCServices = require("../../../lib/services");
 import s from './styles'
 import NavigationService from '../../NavigationService';
 
+
+const callHangUpIco = require('../../../assets/images/call/action-hangup.png')
+
+
 export default class CallReqScreen extends Component {
+  static navigationOptions = {
+    header: null // !!! Hide Header
+  }
   constructor(props) {
     super(props);
 
@@ -21,7 +28,7 @@ export default class CallReqScreen extends Component {
 
     this.WaitingforHangUp = this.WaitingforHangUp.bind(this);
     this.WaitingforReply = this.WaitingforReply.bind(this);
-    this.WaitingforDecline=this.WaitingforDecline.bind(this);
+    this.WaitingforDecline = this.WaitingforDecline.bind(this);
   }
   WaitingforReply() {
     webRTCServices.CallAccepted((data) => {
@@ -35,8 +42,8 @@ export default class CallReqScreen extends Component {
     })
   }
 
-  WaitingforDecline(){
-    webRTCServices.ListenCallDecline(()=>{
+  WaitingforDecline() {
+    webRTCServices.ListenCallDecline(() => {
       this.setState({
         accepted: false,
         decline: true,
@@ -64,7 +71,7 @@ export default class CallReqScreen extends Component {
   }
 
   onDeclinePress() {
-    
+
     this.setState({ decline: true });
     webRTCServices.CallDecline();
   }
@@ -78,7 +85,7 @@ export default class CallReqScreen extends Component {
     this.WaitingforReply();
     this.WaitingforHangUp();
     this.WaitingforDecline();
-  
+
   }
 
   render() {
@@ -91,20 +98,23 @@ export default class CallReqScreen extends Component {
         onRequestClose={this.onDeclinePress}
         style={s.container}
       >
+        <View style={{ backgroundColor: '#05146E', width: '100%', justifyContent: 'center', alignItems: 'center', height: 50 }}>
+          <Text style={s.titleText}> Đang gọi {this.props.navigation.getParam('reqPhoneNumber', 'NA')}</Text>
+        </View>
+
         <CallScreen thisIsMyCallReq={true} roomName={this.state.roomName} myPhoneNumber={this.props.navigation.getParam('phoneNumber', 'NA')} reqPhoneNumber={this.props.navigation.getParam('reqPhoneNumber', 'NA')} Callaccepted={this.state.accepted} Calldecline={this.state.decline} Callhangup={this.state.hangup} />
+
+
         <View style={s.contentBackground}>
-          <View style={s.titleContainer}>
-            <Text style={s.titleText}> {this.props.navigation.getParam('incomingPhoneNumer', 'NA')} is calling</Text>
-          </View>
 
 
           {this.state.accepted ?
             <TouchableOpacity onPress={this.onHangUpPress} style={[s.actionTouchable, s.actionRed]}>
-              <Text style={s.actionText}>HangUp</Text>
+              <Image source={callHangUpIco} />
             </TouchableOpacity>
             :
             <TouchableOpacity onPress={this.onDeclinePress} style={[s.actionTouchable, s.actionRed]}>
-              <Text style={s.actionText}>Decline</Text>
+              <Image source={callHangUpIco} />
             </TouchableOpacity>}
 
         </View>

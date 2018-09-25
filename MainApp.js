@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableHighlight, View, ListView, Image, TextInput, Dimensions, TouchableOpacity ,AsyncStorage} from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, View, ListView, Image, TextInput, Dimensions, TouchableOpacity, AsyncStorage } from 'react-native';
 import styles from "./style/mainapp.js";
 import { Home } from './components/CallComponents/Home/Home'
 import LoginScreen from './components/LoginComponents/LoginScreen'
@@ -22,6 +22,8 @@ const store = createStore(basicReducer)
 const iconLogOut = require('./assets/images/common/signout.png')
 
 
+  
+
 export default class MainApp extends Component {
 
 
@@ -43,12 +45,12 @@ export default class MainApp extends Component {
     }
 
 
-    LogOut(){
+    LogOut() {
         webRTCServices.unregisterPhone();
-         AsyncStorage.removeItem('userPhoneNumber',()=>{
+        AsyncStorage.removeItem('userPhoneNumber', () => {
             NavigationService.navigate('Login')
-         })
-          
+        })
+
 
     }
 
@@ -56,13 +58,17 @@ export default class MainApp extends Component {
         const MainStack = createStackNavigator(
             {
                 Login: {
-                    screen:LoginScreen,
-                   
+                    screen: LoginScreen,
+
                 },
                 Main: {
                     screen: Home,
                     navigationOptions: {
-
+                        headerLeft:null,
+                        headerStyle: {
+                            backgroundColor: '#051886',
+                        },
+                        headerTintColor: '#fff',
                         headerRight: (
                             <TouchableOpacity
                                 onPress={this.LogOut}
@@ -71,6 +77,7 @@ export default class MainApp extends Component {
                                 <Image style={styles.headerButton} source={iconLogOut}></Image>
                             </TouchableOpacity>
                         ),
+                        
                     }
                 },
                 IncCall: IncomingCallScreen,

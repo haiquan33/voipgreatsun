@@ -48,7 +48,7 @@ export default StyleSheet.create({
   actionTouchable: {
     width:'50%',
     height:'50%',
-    backgroundColor: "#59696f",
+    backgroundColor: "#05146E",
     justifyContent: 'center',
     borderRadius: 128,
     alignItems: 'center'
@@ -68,6 +68,7 @@ export default StyleSheet.create({
   },
   actionDarkText: {
     color: "#FFF"
-  }
+  },
+  
 })
 
