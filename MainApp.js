@@ -5,6 +5,8 @@ import { Home } from './components/CallComponents/Home/Home'
 import LoginScreen from './components/LoginComponents/LoginScreen'
 import IncomingCallScreen from './components/CallComponents/IncomingCallScreen/index'
 import CallReqScreen from './components/CallComponents/CallReqScreen/index'
+import MessSendScreen from './components/CallComponents/MessSendScreen/MessSendScreen'
+
 const webRTCServices = require("./lib/services.js");
 import { createStackNavigator } from 'react-navigation';
 import NavigationService from './components/NavigationService';
@@ -81,7 +83,8 @@ export default class MainApp extends Component {
                     }
                 },
                 IncCall: IncomingCallScreen,
-                ReqCall: CallReqScreen
+                ReqCall: CallReqScreen,
+                Chat: MessSendScreen
             },
             {
                 initialRouteName: 'Login',

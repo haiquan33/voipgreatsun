@@ -3,13 +3,17 @@ import { StyleSheet, Text, TouchableHighlight, View, ListView, Image, TextInput,
 import {createTabNavigator} from 'react-navigation'
 import ContactScreen from '../ContactScreen/ContactScreen'
 import DialScreen from '../DialScreen/DialScreen'
-import styles from "./style.js";
+import MessListScreen from '../MessListScreen/MessListScreen'
+import styles from "./styles";
 export const Home =createTabNavigator({
         Dial:{
             screen:DialScreen
         },
         Contact:{
             screen:ContactScreen
+        },
+        MessList:{
+            screen:MessListScreen
         }
     },
     {
