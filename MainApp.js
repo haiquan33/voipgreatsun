@@ -24,7 +24,7 @@ const store = createStore(basicReducer)
 const iconLogOut = require('./assets/images/common/signout.png')
 
 
-  
+
 
 export default class MainApp extends Component {
 
@@ -35,25 +35,30 @@ export default class MainApp extends Component {
         super(props)
 
         this.showCallingPromt = this.showCallingPromt.bind(this);
+       
     }
 
+ 
     showCallingPromt(data) {
         NavigationService.navigate('IncCall', { incomingPhoneNumer: data.phoneNumber });
     }
+
+
+
     componentDidMount() {
         webRTCServices.waitforCall(this.showCallingPromt);
-
+      
 
     }
 
 
     LogOut() {
         webRTCServices.unregisterPhone();
-        AsyncStorage.removeItem('userPhoneNumber', () => {
+        AsyncStorage.removeItem('userPhoneNumber')
+
+        AsyncStorage.removeItem('userMessList', () => {
             NavigationService.navigate('Login')
         })
-
-
     }
 
     render() {
@@ -66,7 +71,7 @@ export default class MainApp extends Component {
                 Main: {
                     screen: Home,
                     navigationOptions: {
-                        headerLeft:null,
+                        headerLeft: null,
                         headerStyle: {
                             backgroundColor: '#D8DCDC',
                         },
@@ -79,7 +84,7 @@ export default class MainApp extends Component {
                                 <Image style={styles.headerButton} source={iconLogOut}></Image>
                             </TouchableOpacity>
                         ),
-                        
+
                     }
                 },
                 IncCall: IncomingCallScreen,

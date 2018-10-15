@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableHighlight, View, ListView, Image, TextInput, Dimensions, AsyncStorage,FlatList,TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, View, ListView, Image, TextInput, Dimensions, AsyncStorage, FlatList, TouchableOpacity } from 'react-native';
 import {
     RkStyleSheet,
     RkText,
@@ -7,14 +7,14 @@ import {
 } from 'react-native-ui-kitten';
 
 import styles from "./styles.js";
-
+import webRTCServices from '../../../lib/services'
 import TempData from './TempData'
 
 
 //redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
-import { store_User_contact_list } from '../../../lib/redux/basicAction'
+import { store_User_mess_list } from '../../../lib/redux/basicAction'
 
 
 class MessListScreen extends Component {
@@ -37,6 +37,9 @@ class MessListScreen extends Component {
         super(props)
         this.renderItem = this._renderItem.bind(this);
         this.state = { user_contact_list: [] }
+
+        this.getComingMess = this.getComingMess.bind(this);
+
     }
 
     _keyExtractor(item, index) {
@@ -51,18 +54,18 @@ class MessListScreen extends Component {
 
 
     _renderItem(info) {
-        console.log("chat mess",info)
+        // console.log("chat mess", info)
         let name = 'Some thing';
         let last = info.item.messages[info.item.messages.length - 1];
         return (
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Chat', {messages: info.item.messages})}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Chat', { friend_phone_no:info.item.withUserPhone })}>
                 <View style={RKstyles.container}>
-                   
+
                     <View style={RKstyles.content}>
                         <View style={RKstyles.contentHeader}>
                             <RkText rkType='header5'>{name}</RkText>
                             <RkText rkType='secondary4 hintColor'>
-                             
+
                             </RkText>
                         </View>
                         <RkText numberOfLines={2} rkType='primary3 mediumLine' style={{ paddingTop: 5 }}>{last.text}</RkText>
@@ -72,21 +75,75 @@ class MessListScreen extends Component {
         )
     }
 
+
+    getComingMess(data) {
+        console.log("Get comming mess", data)
+        var temp_user_mess_list = this.props.user_mess_list;
+        //if this is mess from 1 number
+        if (data.fromNo) {
+            if (temp_user_mess_list) {
+
+                console.log("storage mess");
+                let therewasMessfromthisNo = false;
+                temp_user_mess_list.map((item) => {
+                    if (item.withUserPhone != data.fromNo) return item;
+                    therewasMessfromthisNo = true;
+                    data.MessList[0].messages.forEach((mess) => {
+                        item.messages.push(mess)
+                    })
+
+                })
+                if (!therewasMessfromthisNo) {
+                    temp_user_mess_list.push({
+                        withUserPhone: data.fromNo,
+                        messages: data.MessList[0].messages
+                    })
+                }
+
+            }
+            else {
+                console.log("non storage mess");
+                temp_user_mess_list = [];
+                if (data.MessList) {
+                    temp_user_mess_list.push({
+                        withUserPhone: data.fromNo,
+                        messages: data.MessList[0].messages
+                    })
+                }
+
+            }
+        }
+        this.setState(temp_user_mess_list);
+        console.log(temp_user_mess_list);
+
+        AsyncStorage.setItem('userMessList', JSON.stringify(temp_user_mess_list), () => {
+            webRTCServices.MessSavedNotice();
+            this.props.store_User_mess_list(temp_user_mess_list)
+
+        })
+    }
+
+
     componentDidMount() {
-        
+
         // firebaseService.database().ref('messengers/'+user_phone_no).on('value',function(snapshot){
         //     this.setState({data:snapshot.val()})
         // })
-        this.setState({ data: TempData })
 
-
+        AsyncStorage.getItem('userMessList', (err, result) => {
+            if (result != null) {
+                this.props.store_User_mess_list(JSON.parse(result))
+                console.log("saved mess list", result)
+            }
+        });
+        webRTCServices.waitforMess(this.getComingMess);
     }
 
     render() {
         return (<View style={styles.container}>
             <FlatList
                 style={RKstyles.root}
-                data={this.state.data}
+                data={this.props.user_mess_list}
                 extraData={this.state}
 
                 ItemSeparatorComponent={this._renderSeparator}
@@ -138,12 +195,12 @@ let RKstyles = RkStyleSheet.create(theme => ({
 
 const mapDispatchToProps = dispatch => (
     bindActionCreators({
-
+        store_User_mess_list
     }, dispatch)
 );
 
 const mapStateToProps = state => ({
-    user_phone_no:state.user_phone_no
+    user_mess_list: state.user_mess_list
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessListScreen);

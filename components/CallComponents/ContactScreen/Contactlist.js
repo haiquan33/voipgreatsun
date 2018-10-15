@@ -15,7 +15,7 @@ const webRTCServices = require("../../../lib/services.js");
 
 
 const iconCall = require('../../../assets/images/keypad/call-icon.png')
-
+const iconMess = require('../../../assets/images/common/mail.png')
 export default class Contactlist extends Component {
 
 
@@ -23,12 +23,18 @@ export default class Contactlist extends Component {
         super(props);
         this.state = { contact_list: null }
         this.Process_contact_data = this.Process_contact_data.bind(this)
-        this._startCall=this.startCall.bind(this);
+        this._startCall = this.startCall.bind(this);
+        this._startMess = this.startMess.bind(this)
     }
 
-    startCall(phoneNumber){
+    startCall(phoneNumber) {
         webRTCServices.requestCall(phoneNumber);
-        NavigationService.navigate('ReqCall',{reqPhoneNumber:phoneNumber})
+        NavigationService.navigate('ReqCall', { reqPhoneNumber: phoneNumber })
+
+    }
+    startMess(phoneNumber) {
+        // webRTCServices.requestCall(phoneNumber);
+        NavigationService.navigate('Chat',{friend_phone_no:phoneNumber})
 
     }
     Process_contact_data() {
@@ -37,23 +43,23 @@ export default class Contactlist extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-      
-            // if (nextProps.contactlist) {
-               
-            //     let temp_list = nextProps.contactlist.map(contact => {
-            //         var item = contact;
-            //         item.key = contact.rawContactId;
-            //         return item;
-            //     })
 
-                
-            //     this.setState({ contact_list: temp_list });
-            // }
-        
-        
+        // if (nextProps.contactlist) {
+
+        //     let temp_list = nextProps.contactlist.map(contact => {
+        //         var item = contact;
+        //         item.key = contact.rawContactId;
+        //         return item;
+        //     })
+
+
+        //     this.setState({ contact_list: temp_list });
+        // }
+
+
     }
 
-   
+
 
     renderItem(item) {
         let temp_fname = item.familyName ? item.familyName : '';
@@ -80,23 +86,27 @@ export default class Contactlist extends Component {
                 <Text style={styles.contactName}>{Name} </Text>
                 <Text>{phoneNumber} </Text>
             </View>;
-        
-        Content = phoneNumber? (
+
+        Content = phoneNumber ? (
             <View style={{
                 display: 'flex',
                 backgroundColor: '#BCBCBC',
-                height:60,
-                flexDirection:'row',
-                justifyContent:'flex-end',
-                alignItems:'center'
+                height: 60,
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                alignItems: 'center'
             }}>
-                <TouchableOpacity onPress={()=>this._startCall(phoneNumber)}  style={{margin:10}} >
+                <TouchableOpacity onPress={() => this._startMess(phoneNumber)} style={{ margin: 10 }} >
+                    <Image source={iconMess} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this._startCall(phoneNumber)} style={{ margin: 10 }} >
                     <Image source={iconCall} />
                 </TouchableOpacity>
+
             </View>)
             :
             <Text>Không gọi được</Text>
-            
+
             ;
 
 

@@ -18,7 +18,9 @@ import {
 } from 'react-native-ui-kitten';
 import _ from 'lodash';
 
-import {scale} from '../../../utils/scale'
+const webRTCServices = require('../../../lib/services');
+
+import { scale } from '../../../utils/scale'
 import styles from "./styles.js";
 
 let moment = require('moment');
@@ -39,9 +41,9 @@ class MessSendScreen extends Component {
     constructor(props) {
         super(props)
 
-        this.state = { data: [],message:'' }
-        this._pushMessage=this._pushMessage.bind(this);
-        this._scroll=this._scroll.bind(this)
+        this.state = { data: [], message: '' }
+        this._pushMessage = this._pushMessage.bind(this);
+        //this._scroll = this._scroll.bind(this)
     }
 
 
@@ -56,8 +58,8 @@ class MessSendScreen extends Component {
             ? '#e9ebee'
             : '#75D1E8';
         let textColor = inMessage
-                        ?"black"
-                        :"white";
+            ? "black"
+            : "white";
         let itemStyle = inMessage ? RKstyles.itemIn : RKstyles.itemOut;
 
         let renderDate = (time) => (
@@ -69,7 +71,7 @@ class MessSendScreen extends Component {
             <View style={[RKstyles.item, itemStyle]}>
                 {!inMessage && renderDate(info.item.time)}
                 <View style={[RKstyles.balloon, { backgroundColor }]}>
-                    <RkText rkType='primary2 mediumLine chat' style={{ paddingTop: 5,color:textColor}}>{info.item.text}</RkText>
+                    <RkText rkType='primary2 mediumLine chat' style={{ paddingTop: 5, color: textColor }}>{info.item.text}</RkText>
                 </View>
                 {inMessage && renderDate(info.item.time)}
             </View>
@@ -77,6 +79,7 @@ class MessSendScreen extends Component {
     }
 
     _scroll() {
+        this.refs.list.scrollToEnd();
         // if (Platform.OS === 'ios') {
         //     this.refs.list.scrollToEnd();
         // } else {
@@ -87,30 +90,66 @@ class MessSendScreen extends Component {
     _pushMessage() {
         if (!this.state.message)
             return;
+        webRTCServices.SendMess(this.props.user_phone_no, this.state.friend_phone_no, this.state.message)
+        // this.state.data.push({ id: this.state.data.length, time: 0, type: 'out', text: this.state.message });
 
-        this.state.data.push({ id: this.state.data.length, time: 0, type: 'out', text: this.state.message });
         this.setState({ message: '' });
         this._scroll(true);
     }
 
 
     componentDidMount() {
-        this.setState({ data: this.props.navigation.getParam('messages', [])})
-
+        let friend_phone_no= this.props.navigation.getParam('friend_phone_no', '0')
+        this.setState({ friend_phone_no})
+        if (this.props.user_mess_list) {
+            var temp_data = this.props.user_mess_list.filter((item) => {
+                return item.withUserPhone === friend_phone_no
+            })
+        }
+        let data;
+        if (temp_data[0]) {
+            data = temp_data[0].messages;
+            console.log("Chat data", data)
+        }
+        this.setState({ data })
 
 
     }
 
+    componentDidUpdate(prevProps) {
+        // Typical usage (don't forget to compare props):
+        console.log("changed props", this.props.user_mess_list)
+        if (this.props.user_mess_list !== prevProps.user_mess_list) {
+            if (this.props.user_mess_list) {
+                var temp_data = this.props.user_mess_list.filter((item) => {
+                    return item.withUserPhone === this.state.friend_phone_no
+                })
+            }
+            let data;
+            if (temp_data[0]) {
+                data = temp_data[0].messages;
+                console.log("Chat data", data)
+            }
+            this.setState({ data })
+            this.refs.list.scrollToEnd();
+        }
+
+    }
+
     render() {
+
+        //console.log("Chat data",data)
         return (<RkAvoidKeyboard style={RKstyles.container} onResponderRelease={(event) => {
             Keyboard.dismiss();
         }}>
-            <FlatList ref='list'
+            <FlatList ref="list"
                 extraData={this.state}
                 style={RKstyles.list}
                 data={this.state.data}
                 keyExtractor={this._keyExtractor}
                 renderItem={this._renderItem} />
+
+
             <View style={RKstyles.footer}>
                 <RkButton style={RKstyles.plus} rkType='clear'>
                     <RkText rkType='awesome secondaryColor'>Clear</RkText>
@@ -141,9 +180,9 @@ let RKstyles = RkStyleSheet.create(theme => ({
     header: {
         alignItems: 'center'
     },
-    textinput:{
-        width:'70%',
-        
+    textinput: {
+        width: '70%',
+
     },
     avatar: {
         marginRight: 16,
@@ -201,7 +240,8 @@ const mapDispatchToProps = dispatch => (
 );
 
 const mapStateToProps = state => ({
-
+    user_mess_list: state.user_mess_list,
+    user_phone_no: state.user_phone_no
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessSendScreen);
