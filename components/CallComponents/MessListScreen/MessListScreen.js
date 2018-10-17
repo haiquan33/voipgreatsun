@@ -57,8 +57,9 @@ class MessListScreen extends Component {
         // console.log("chat mess", info)
         let name = 'Some thing';
         let last = info.item.messages[info.item.messages.length - 1];
+        console.log("last message to ",info.item.withUserPhone,' ',info.item.messages)
         return (
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Chat', { friend_phone_no:info.item.withUserPhone })}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Chat', { friend_phone_no: info.item.withUserPhone })}>
                 <View style={RKstyles.container}>
 
                     <View style={RKstyles.content}>
@@ -79,24 +80,98 @@ class MessListScreen extends Component {
     getComingMess(data) {
         console.log("Get comming mess", data)
         var temp_user_mess_list = this.props.user_mess_list;
-        //if this is mess from 1 number
-        if (data.fromNo) {
+        //if this is received mess
+        if ((data.fromNo)||(data.multiMessWaiting)) {
+            //if this is mess from 1 number
+            if (!data.multiMessWaiting) {
+                if (temp_user_mess_list) {
+
+                    console.log("storage mess");
+                    let therewasMessfromthisNo = false;
+                    temp_user_mess_list.map((item) => {
+                        if (item.withUserPhone != data.fromNo) return item;
+                        therewasMessfromthisNo = true;
+                        data.MessList[0].messages.forEach((mess) => {
+                            item.messages.push(mess)
+                        })
+
+                    })
+                    if (!therewasMessfromthisNo) {
+                        temp_user_mess_list.push({
+                            withUserPhone: data.fromNo,
+                            messages: data.MessList[0].messages
+                        })
+                    }
+
+                }
+                else {
+                    console.log("non storage mess");
+                    temp_user_mess_list = [];
+                    if (data.MessList) {
+                        temp_user_mess_list.push({
+                            withUserPhone: data.fromNo,
+                            messages: data.MessList[0].messages
+                        })
+                    }
+
+                }
+            }
+            //if this is multi mess from server that sent while this user is offlne
+            else {
+                if (temp_user_mess_list) {
+                    
+
+                    data.MessList.map((MessItem)=>{
+                        let therewasMessfromthisNo=false;
+                        temp_user_mess_list.map((item) => {
+                            if (item.withUserPhone != MessItem.withUserPhone) return item;
+                            therewasMessfromthisNo = true;
+                            MessItem.messages.forEach((mess) => {
+                                item.messages.push(mess)
+                            })
+                        })
+                        if (!therewasMessfromthisNo){
+                            temp_user_mess_list.push({
+                                withUserPhone:MessItem.withUserPhone,
+                                messages:MessItem.messages
+                            })
+                        }
+                    })
+                 
+                    
+                }
+                else{
+                    temp_user_mess_list=[];
+                    data.MessList.map((MessItem)=>{
+                       
+                            temp_user_mess_list.push({
+                                withUserPhone:MessItem.withUserPhone,
+                                messages:MessItem.messages
+                            })
+                        }
+                    )
+                }
+            }
+        }
+        //if this is mess that sent from this user
+        else if (data.toNo) {
+            console.log("get sent mess")
             if (temp_user_mess_list) {
 
                 console.log("storage mess");
                 let therewasMessfromthisNo = false;
                 temp_user_mess_list.map((item) => {
-                    if (item.withUserPhone != data.fromNo) return item;
+                    if (item.withUserPhone != data.toNo) return item;
                     therewasMessfromthisNo = true;
-                    data.MessList[0].messages.forEach((mess) => {
-                        item.messages.push(mess)
-                    })
+
+                    item.messages.push(data.MessSent.messages[0])
+
 
                 })
                 if (!therewasMessfromthisNo) {
-                    temp_user_mess_list.push({
-                        withUserPhone: data.fromNo,
-                        messages: data.MessList[0].messages
+                    temp_user_mess_list.push({ 
+                        withUserPhone: data.toNo,
+                        messages: data.MessSent.messages
                     })
                 }
 
@@ -104,15 +179,16 @@ class MessListScreen extends Component {
             else {
                 console.log("non storage mess");
                 temp_user_mess_list = [];
-                if (data.MessList) {
+                if (data.MessSent) {
                     temp_user_mess_list.push({
-                        withUserPhone: data.fromNo,
-                        messages: data.MessList[0].messages
+                        withUserPhone: data.toNo,
+                        messages: data.MessSent.messages
                     })
                 }
 
             }
         }
+
         this.setState(temp_user_mess_list);
         console.log(temp_user_mess_list);
 

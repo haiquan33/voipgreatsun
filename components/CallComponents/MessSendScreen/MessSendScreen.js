@@ -79,7 +79,7 @@ class MessSendScreen extends Component {
     }
 
     _scroll() {
-        this.refs.list.scrollToEnd();
+       // this.refs.list.scrollToEnd();
         // if (Platform.OS === 'ios') {
         //     this.refs.list.scrollToEnd();
         // } else {
@@ -99,18 +99,19 @@ class MessSendScreen extends Component {
 
 
     componentDidMount() {
-        let friend_phone_no= this.props.navigation.getParam('friend_phone_no', '0')
-        this.setState({ friend_phone_no})
+        let friend_phone_no = this.props.navigation.getParam('friend_phone_no', '0')
+        this.setState({ friend_phone_no })
         if (this.props.user_mess_list) {
             var temp_data = this.props.user_mess_list.filter((item) => {
                 return item.withUserPhone === friend_phone_no
             })
         }
         let data;
-        if (temp_data[0]) {
-            data = temp_data[0].messages;
-            console.log("Chat data", data)
-        }
+        if (temp_data)
+            if (temp_data[0]) {
+                data = temp_data[0].messages;
+                console.log("Chat data", data)
+            }
         this.setState({ data })
 
 
@@ -124,14 +125,16 @@ class MessSendScreen extends Component {
                 var temp_data = this.props.user_mess_list.filter((item) => {
                     return item.withUserPhone === this.state.friend_phone_no
                 })
+                let data;
+                if (temp_data)
+                    if (temp_data[0]) {
+                        data = temp_data[0].messages;
+                        console.log("Chat data", data)
+                    }
+                this.setState({ data })
+              //  this.refs.list.scrollToEnd();
             }
-            let data;
-            if (temp_data[0]) {
-                data = temp_data[0].messages;
-                console.log("Chat data", data)
-            }
-            this.setState({ data })
-            this.refs.list.scrollToEnd();
+
         }
 
     }
@@ -156,7 +159,7 @@ class MessSendScreen extends Component {
                 </RkButton>
 
                 <RkTextInput
-                    onFocus={() => this._scroll(true)}
+                    onFocus={() => null}
                     onBlur={() => this._scroll(true)}
                     onChangeText={(message) => this.setState({ message })}
                     value={this.state.message}
