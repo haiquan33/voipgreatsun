@@ -43,12 +43,13 @@ class MessSendScreen extends Component {
 
         this.state = { data: [], message: '' }
         this._pushMessage = this._pushMessage.bind(this);
-        //this._scroll = this._scroll.bind(this)
+        this._scroll = this._scroll.bind(this)
     }
 
 
 
     _keyExtractor(post, index) {
+        
         return post.id;
     }
 
@@ -85,7 +86,12 @@ class MessSendScreen extends Component {
         // } else {
         //     _.delay(() => this.refs.list.scrollToEnd(), 100);
         // }
+        setTimeout(() => {
+            this.refs.list.scrollToEnd();
+          }, 500);
+        
     }
+
 
     _pushMessage() {
         if (!this.state.message)
@@ -112,11 +118,11 @@ class MessSendScreen extends Component {
                 data = temp_data[0].messages;
                 console.log("Chat data", data)
             }
-        this.setState({ data })
-
+        this.setState({ data },()=>this._scroll())
+       
 
     }
-
+    
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
         console.log("changed props", this.props.user_mess_list)
@@ -131,7 +137,9 @@ class MessSendScreen extends Component {
                         data = temp_data[0].messages;
                         console.log("Chat data", data)
                     }
-                this.setState({ data })
+                this.setState({ data });
+                this._scroll();
+               
               //  this.refs.list.scrollToEnd();
             }
 
@@ -150,7 +158,8 @@ class MessSendScreen extends Component {
                 style={RKstyles.list}
                 data={this.state.data}
                 keyExtractor={this._keyExtractor}
-                renderItem={this._renderItem} />
+                renderItem={this._renderItem}
+                />
 
 
             <View style={RKstyles.footer}>
@@ -159,8 +168,8 @@ class MessSendScreen extends Component {
                 </RkButton>
 
                 <RkTextInput
-                    onFocus={() => null}
-                    onBlur={() => this._scroll(true)}
+                    onFocus={() => this._scroll()}
+                    onBlur={() => this._scroll()}
                     onChangeText={(message) => this.setState({ message })}
                     value={this.state.message}
                     rkType='row sticker'

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableHighlight, View, ListView, Image, TextInput, AsyncStorage, BackHandler ,Modal} from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, View, ListView, Image, TextInput, AsyncStorage, BackHandler ,Modal, Platform} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import { connect } from 'react-redux';
@@ -66,6 +66,7 @@ class LoginScreen extends Component {
 
     render() {
         return (
+            (Platform.OS==='android')?
             <LinearGradient colors={['#051365', '#061988', '#4256D7']} style={styles.containerGradient}>
 
 
@@ -111,6 +112,52 @@ class LoginScreen extends Component {
                     <Text style={{color:'white'}}>Điều khoản người dùng</Text>
                 </TouchableHighlight>
             </LinearGradient>
+            :
+            <View style={styles.containerGradient}>
+
+
+                <Modal
+                    animationType="slide"
+                    transparent={false}
+                    visible={this.state.modalVisible}
+                    >
+                    <View style={{ marginTop: 22 }} style={styles.containerGradient}>
+                        <View>
+
+                            <PrivacyModal/>
+                            <TouchableHighlight
+                                onPress={() => {
+                                    this.setModalVisible(!this.state.modalVisible);
+                                }} 
+                                style={{width:100,height:50,backgroundColor: '#FDEA03',marginTop:100,borderRadius:25}}
+                                >
+                                <Text style={styles.loginText }>Đồng ý</Text>
+                            </TouchableHighlight>
+                        </View>
+                    </View>
+                </Modal>
+                <View>
+                    <Image source={logo} style={styles.logo}></Image>
+                    <TextInput
+                        placeholder={"Nhập số điện thoại"} placeholderTextColor={"#fff"}
+                        onChangeText={(phonenumber) => this.setState({ phonenumber })}
+                        keyboardType='number-pad'
+                        value={this.state.phonenumber}
+                        style={styles.input}
+                    />
+                    <TouchableHighlight
+                        onPress={this.handleEnterClick} style={styles.loginButton}>
+                        <Text style={styles.loginText} >ĐĂNG NHẬP</Text>
+                    </TouchableHighlight>
+                </View>
+                <TouchableHighlight
+                    onPress={() => {
+                        this.setModalVisible(!this.state.modalVisible);
+                    }}
+                    style={{marginTop:100}}>
+                    <Text style={{color:'white'}}>Điều khoản người dùng</Text>
+                </TouchableHighlight>
+            </View>
         )
     }
 }
