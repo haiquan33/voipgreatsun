@@ -17,6 +17,7 @@
     "react-native-firebase": "^5.0.0",
     "react-native-gesture-handler": "^1.0.7",
     "react-native-linear-gradient": "^2.4.2",
+    "react-native-onesignal": "^3.2.7",
     "react-native-ui-kitten": "^3.1.2",
     "react-native-uuid": "^1.4.9",
     "react-native-webrtc": "^1.67.1",

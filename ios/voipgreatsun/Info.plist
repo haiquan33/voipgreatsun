@@ -5,11 +5,11 @@
 	<key>Stor</key>
 	<string></string>
 	<key>NSContactsUsageDescription</key>
-	<string>contact list</string>
+	<string>phần mềm cần truy cập thông tin danh bạ để bạn có thể chọn và liên hệ bạn bè từ danh bạ một cách nhanh nhất</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>microphone permision</string>
+	<string>phần mềm cần truy cập microphone của bạn để thực hiện chức năng gọi điện</string>
 	<key>NSCameraUsageDescription</key>
-	<string>camera</string>
+	<string>phần mềm cần truy cập camera của bạn để thực hiện chức năng gọi video</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>CFBundleDevelopmentRegion</key>
@@ -39,9 +39,7 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 		<key>NSExceptionDomains</key>
-		<dict>
-			
-		</dict>
+		<dict/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
